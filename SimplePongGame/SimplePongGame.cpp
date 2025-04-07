@@ -2,11 +2,38 @@
 //
 
 #include <iostream>
-#include "raylib.h"
+#include <raylib.h>
+
+using namespace std;
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	int screenWidth = 800;
+	int screenHeight = 600;
+
+	cout << "Don't worry! The game is launching rather slower than expected, but it will be fixed" << endl;
+
+	InitWindow(screenWidth, screenHeight, "Simple Pong Game");
+
+	SetTargetFPS(60);
+	cout << "Window should be open now" << endl;
+	while (!WindowShouldClose())
+	{
+		// Update
+		//if (IsKeyDown(KEY_RIGHT)) { /* Move right */ }
+		//if (IsKeyDown(KEY_LEFT)) { /* Move left */ }
+		// Draw
+		BeginDrawing();
+		ClearBackground(RAYWHITE);
+
+		DrawText("Simple Pong Game", 190, 200, 20, LIGHTGRAY);
+
+		EndDrawing();
+	}
+	cout << "Window should be closed now" << endl;
+	CloseWindow(); // Close window and OpenGL context
+	// De-Initialization
+
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
