@@ -12,6 +12,7 @@ int main()
 	int screenHeight = 600;
 
 	cout << "Don't worry! The game is launching rather slower than expected, but it will be fixed" << endl;
+	bool isInMenu = true, singleplayer = false, multiplayer = false, isCommandRun = false; //isCommandRun is just a simple flag to avoid message spam in terminal window
 
 	InitWindow(screenWidth, screenHeight, "Simple Pong Game");
 
@@ -19,21 +20,56 @@ int main()
 	cout << "Window should be open now" << endl;
 	while (!WindowShouldClose())
 	{
-		// Update
-		//if (IsKeyDown(KEY_RIGHT)) { /* Move right */ }
-		//if (IsKeyDown(KEY_LEFT)) { /* Move left */ }
-		// Draw
-		BeginDrawing();
-		ClearBackground(RAYWHITE);
+		if (isInMenu) {
 
-		DrawText("Simple Pong Game", 190, 200, 20, LIGHTGRAY);
-
-		EndDrawing();
+			// Draw menu
+			BeginDrawing();
+			ClearBackground(RAYWHITE);
+			DrawText("Welcome to the Simple Pong Game!", 250, 200, 20, LIGHTGRAY);
+			DrawText("Press ENTER to start singleplayer", 250, 300, 20, LIGHTGRAY);
+			DrawText("Press SHIFT to start local multiplayer", 250, 350, 20, LIGHTGRAY);
+			EndDrawing();
+			if (IsKeyPressed(KEY_ENTER)) {
+				isInMenu = false;
+				singleplayer = true;
+			}
+			else if (IsKeyPressed(KEY_LEFT_SHIFT) || IsKeyPressed(KEY_RIGHT_SHIFT)) {
+				isInMenu = false;
+				multiplayer = true;
+			}
+		}
+		else {
+			// Game logic and rendering goes here
+			if (singleplayer == true) {
+				if (isCommandRun == false) {
+					cout << "Singleplayer mode" << endl;
+					isCommandRun = true; //Tripping the flag
+					}
+				BeginDrawing();
+				DrawRectangle(20, 250, 30, 100, BLUE);
+				// Add singleplayer game logic here
+			}
+			else if (multiplayer == true) {
+				if (isCommandRun == false) {
+					cout << "Multiplayer mode" << endl;
+					isCommandRun = true; //Tripping the flag
+				}
+				// Add multiplayer game logic here
+			}
+			BeginDrawing();
+			ClearBackground(RAYWHITE);
+			DrawText("Game is running!", 350, 280, 20, LIGHTGRAY);
+			DrawText("Press ESC to exit", 300, 320, 20, LIGHTGRAY);
+			if (IsKeyPressed(KEY_ESCAPE)) {
+				break; // Exit the game loop
+			}
+			EndDrawing();
+		}
 	}
 	cout << "Window should be closed now" << endl;
 	CloseWindow(); // Close window and OpenGL context
 	// De-Initialization
-
+	exit(0); // Exit the program
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
