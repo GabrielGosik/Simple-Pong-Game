@@ -1,5 +1,4 @@
-// SimplePongGame.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+
 
 #include <iostream>
 #include <raylib.h>
@@ -11,8 +10,12 @@ int main()
 	int screenWidth = 800;
 	int screenHeight = 600;
 
+	int playerRadius = 1;
+	Vector2 Player1Position = { GetScreenWidth() *0.9, GetScreenHeight() / 2 };
+	
+
 	cout << "Don't worry! The game is launching rather slower than expected, but it will be fixed" << endl;
-	bool isInMenu = true, singleplayer = false, multiplayer = false, isCommandRun = false; //isCommandRun is just a simple flag to avoid message spam in terminal window
+	bool isInMenu = true, singleplayer = false, multiplayer = false, paused = false, isCommandRun = false; //isCommandRun is just a simple flag to avoid message spam in terminal window
 
 	InitWindow(screenWidth, screenHeight, "Simple Pong Game");
 
@@ -45,9 +48,22 @@ int main()
 					cout << "Singleplayer mode" << endl;
 					isCommandRun = true; //Tripping the flag
 					}
+				//Player logic begin
+				if (!paused) {
+					if (IsKeyPressedRepeat(KEY_W)) {
+						Player1Position.y -= 15;
+
+					}
+					if (IsKeyPressedRepeat(KEY_S)) {
+						Player1Position.y += 15;
+					}
+					if (Player1Position.y >= playerRadius) Player1Position.y -= 20;
+					if ((Player1Position.y-50) <= (GetScreenHeight() - playerRadius ) ) Player1Position.y += 25;
+				}
 				BeginDrawing();
-				DrawRectangle(20, 250, 30, 100, BLUE);
-				// Add singleplayer game logic here
+				DrawRectangle(Player1Position.x, Player1Position.y, 30, 100, BLUE);
+
+				// Add more singleplayer game logic here
 			}
 			else if (multiplayer == true) {
 				if (isCommandRun == false) {
@@ -72,13 +88,3 @@ int main()
 	exit(0); // Exit the program
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
