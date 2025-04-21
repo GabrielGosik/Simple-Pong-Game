@@ -57,8 +57,12 @@ int main()
 					if (IsKeyPressedRepeat(KEY_S)) {
 						Player1Position.y += 15;
 					}
-					if (Player1Position.y >= playerRadius) Player1Position.y -= 20;
-					if ((Player1Position.y-50) <= (GetScreenHeight() - playerRadius ) ) Player1Position.y += 25;
+					if (Player1Position.y >= 540) {
+						Player1Position.y -= 20;
+					}
+					if ((Player1Position.y - 50) <= -75) {
+						Player1Position.y += 20;
+					}
 				}
 				BeginDrawing();
 				DrawRectangle(Player1Position.x, Player1Position.y, 30, 100, BLUE);
