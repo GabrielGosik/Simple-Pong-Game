@@ -1,26 +1,51 @@
 
 
-#include <iostream>
+//#include <iostream>
 #include <raylib.h>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
+void ballReset() {
+	// Reset ball position and velocity
+}
+void playerPoint(int whichPlayer, int &playerPoints) {
+	// Player 1 wins a point
+}
+
 int main()
 {
+	srand(time(NULL));
 	int screenWidth = 800;
 	int screenHeight = 600;
 
 	int playerRadius = 1;
-	Vector2 Player1Position = { GetScreenWidth() *0.9, GetScreenHeight() / 2 };
+	int player1Points = 0;
+	int player2Points = 0;
+	int ballSide = rand() % 1;
+	float ballAngle = ((rand() % 9) + 1) - 5;
 	
 
-	cout << "Don't worry! The game is launching rather slower than expected, but it will be fixed" << endl;
+
+	//cout << "Don't worry! The game is launching rather slower than expected, but it will be fixed" << endl;
 	bool isInMenu = true, singleplayer = false, multiplayer = false, paused = false, isCommandRun = false; //isCommandRun is just a simple flag to avoid message spam in terminal window
 
 	InitWindow(screenWidth, screenHeight, "Simple Pong Game");
 
+	Vector2 Player1Position = { GetScreenWidth() * 0.01, (GetScreenHeight() / 2)-10 };
+	Vector2 Player2Position = { GetScreenWidth() * 0.99, (GetScreenHeight() / 2) - 10 };
+	Vector2 BallPosition = { GetScreenWidth() / 2, GetScreenHeight() / 2 };
+	if (ballSide == 0) {
+		Vector2{ 5.0f, ballAngle };
+	}
+	else {
+		Vector2{ -5.0f, ballAngle };
+	}
+
+
 	SetTargetFPS(60);
-	cout << "Window should be open now" << endl;
+	//cout << "Window should be open now" << endl;
 	while (!WindowShouldClose())
 	{
 		if (isInMenu) {
@@ -45,10 +70,10 @@ int main()
 			// Game logic and rendering goes here
 			if (singleplayer == true) {
 				if (isCommandRun == false) {
-					cout << "Singleplayer mode" << endl;
+					//cout << "Singleplayer mode" << endl;
 					isCommandRun = true; //Tripping the flag
 					}
-				//Player logic begin
+				//Player logic
 				if (!paused) {
 					if (IsKeyPressedRepeat(KEY_W)) {
 						Player1Position.y -= 15;
@@ -58,27 +83,39 @@ int main()
 						Player1Position.y += 15;
 					}
 					if (Player1Position.y >= 540) {
-						Player1Position.y -= 20;
+						Player1Position.y -= 16;
 					}
 					if ((Player1Position.y - 50) <= -75) {
-						Player1Position.y += 20;
+						Player1Position.y += 16;
 					}
+				//Ball logic
+
+
+					if (BallPosition.x >= 800) {
+						ballReset();
+						playerPoint(1, player1Points);
+					}
+					else if (BallPosition.x <= 0) {
+						ballReset();
+						playerPoint(2, player2Points);
+					}
+
 				}
 				BeginDrawing();
 				DrawRectangle(Player1Position.x, Player1Position.y, 30, 100, BLUE);
+				DrawCircle(BallPosition.x, BallPosition.y, 10, BLACK);
 
 				// Add more singleplayer game logic here
 			}
 			else if (multiplayer == true) {
 				if (isCommandRun == false) {
-					cout << "Multiplayer mode" << endl;
+					//cout << "Multiplayer mode" << endl;
 					isCommandRun = true; //Tripping the flag
 				}
 				// Add multiplayer game logic here
 			}
 			BeginDrawing();
 			ClearBackground(RAYWHITE);
-			DrawText("Game is running!", 350, 280, 20, LIGHTGRAY);
 			DrawText("Press ESC to exit", 300, 320, 20, LIGHTGRAY);
 			if (IsKeyPressed(KEY_ESCAPE)) {
 				break; // Exit the game loop
@@ -86,9 +123,9 @@ int main()
 			EndDrawing();
 		}
 	}
-	cout << "Window should be closed now" << endl;
+	//cout << "Window should be closed now" << endl;
 	CloseWindow(); // Close window and OpenGL context
 	// De-Initialization
-	exit(0); // Exit the program
+	//exit(0); // Exit the program
 }
 
