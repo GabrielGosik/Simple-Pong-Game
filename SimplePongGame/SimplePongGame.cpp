@@ -1,9 +1,10 @@
 
 
-//#include <iostream>
+#include <iostream>
 #include <raylib.h>
 #include <cstdlib>
 #include <ctime>
+
 
 using namespace std;
 
@@ -24,7 +25,7 @@ int main()
 	int player1Points = 0;
 	int player2Points = 0;
 	int ballSide = rand() % 1;
-	float ballAngle = ((rand() % 9) + 1) - 5;
+	int ballAngle = ((rand() % 9) + 1) - 5;
 	
 
 
@@ -33,14 +34,18 @@ int main()
 
 	InitWindow(screenWidth, screenHeight, "Simple Pong Game");
 
+
 	Vector2 Player1Position = { GetScreenWidth() * 0.01, (GetScreenHeight() / 2)-10 };
 	Vector2 Player2Position = { GetScreenWidth() * 0.99, (GetScreenHeight() / 2) - 10 };
 	Vector2 BallPosition = { GetScreenWidth() / 2, GetScreenHeight() / 2 };
+	Vector2 BallSpeed{ 0,0 };
 	if (ballSide == 0) {
-		Vector2{ 5.0f, ballAngle };
+		Vector2 BallSpeed { 5.0f, 5.0f };
+		cout << "0" << endl;
 	}
 	else {
-		Vector2{ -5.0f, ballAngle };
+		Vector2 BallSpeed { -5.0f, 5.0f };
+		cout << "1" << endl;
 	}
 
 
@@ -99,7 +104,11 @@ int main()
 						ballReset();
 						playerPoint(2, player2Points);
 					}
+					BallPosition.x += BallSpeed.x;
+					BallPosition.y += BallSpeed.y;
 
+					if ((BallPosition.x >= (GetScreenWidth() - 10)) || (BallPosition.x <= 10)) BallSpeed.x *= -1.0f;
+					if ((BallPosition.y >= (GetScreenWidth() - 10)) || (BallPosition.y <= 10)) BallSpeed.y *= -1.0f;
 				}
 				BeginDrawing();
 				DrawRectangle(Player1Position.x, Player1Position.y, 30, 100, BLUE);
